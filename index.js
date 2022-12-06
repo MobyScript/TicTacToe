@@ -1,3 +1,4 @@
+// On launch this will render
 window.addEventListener("DOMContentLoaded", () => {
   const tiles = Array.from(document.querySelectorAll(".tile"));
   const playerDisplay = document.querySelector(".display-player");
@@ -13,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const TIE = "TIE";
 
   /*
-    Indexes of the tile boards
+    The indexes of the boards ( tiles )
         [0][1][2]
         [3][4][5]
         [7][8][9]
@@ -30,8 +31,11 @@ window.addEventListener("DOMContentLoaded", () => {
     [2, 4, 6],
   ];
 
+  // Handle the Result
   function handleResultValidation() {
+    // Since the Round isn't over, keep the status of roundWon false
     let roundWon = false;
+    // A loop of rounds
     for (let i = 0; i <= 7; i++) {
       const winCondition = winningConditions[i];
       const a = board[winCondition[0]];
@@ -56,6 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Announce the winner using Switch Case
   const announce = (type) => {
     switch (type) {
       case PLAYERO_WON:
@@ -63,7 +68,7 @@ window.addEventListener("DOMContentLoaded", () => {
         break;
 
       case PLAYERX_WON:
-        announcer.innerHTML = 'Player <span class="playerO">X</span> Won';
+        announcer.innerHTML = 'Player <span class="playerX">X</span> Won';
         break;
       case TIE:
         announcer.innerHTML = "Tie";
@@ -77,10 +82,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return true;
   };
 
-  const updateBoard = (index) => {
-    board[index] = currentPlayer;
-  };
-
+  // Once the player has chosen the index from the board it will remove the current player and add the new player Status (if X is current change to O else keep X)
   const changePlayer = () => {
     playerDisplay.classList.remove(`player${currentPlayer}`);
     currentPlayer = currentPlayer === "X" ? "O" : "X";
@@ -88,6 +90,11 @@ window.addEventListener("DOMContentLoaded", () => {
     playerDisplay.classList.add(`player${currentPlayer}`);
   };
 
+  const updateBoard = (index) => {
+    board[index] = currentPlayer;
+  };
+
+  // This function updates the board Value adding either X or O depending on the player who's playing
   const userAction = (tile, index) => {
     if (isValidAction(tile) && isGameActive) {
       tile.innerText = currentPlayer;
@@ -98,12 +105,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Rest function that rest the board and conditions
   const resetBoard = () => {
     board = ["", "", "", "", "", "", "", "", ""];
     isGameActive = true;
     announcer.classList.add("hide");
 
-    if (currentPlayer === "0") {
+    if (currentPlayer === "O") {
       changePlayer();
     }
     tiles.forEach((tile) => {
